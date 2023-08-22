@@ -41,6 +41,8 @@ jobs:
           registry: ${{ env.CONTAINER_REGISTRY }}
           username: ${{ env.CONTAINER_REGISTRY == 'quay.io' && secrets.QUAY_IO_USERNAME }}
           password: ${{ env.CONTAINER_REGISTRY == 'quay.io' && secrets.QUAY_IO_TOKEN }}
+        env:
+          CONTAINER_REGISTRY: ${{ env.CONTAINER_REGISTRY }}
 
       - name: Docker meta
         id: meta
