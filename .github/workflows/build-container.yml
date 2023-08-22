@@ -6,7 +6,7 @@ on:
       - "*" # triggers only if new tag version is pushed
 
 env:
-  CONTAINER_REGISTRY: ${{ github.repository_owner == 'krvoora_ocm' && 'quay.io' }}
+  CONTAINER_REGISTRY: ${{ github.repository_owner == 'krvoora_ocm' && 'quay.io' || '' }} # Set to empty string if not quay.io
   RHEL_VERSION: ubi9
   GO_VER: 1.19
 
@@ -33,16 +33,14 @@ jobs:
               max-parallelism = 1
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2 # Use v2 instead of v3
 
       - name: Login to the ${{ env.CONTAINER_REGISTRY }} Container Registry
         uses: docker/login-action@v2
         with:
           registry: ${{ env.CONTAINER_REGISTRY }}
-          username: ${{ env.CONTAINER_REGISTRY == 'quay.io' && secrets.QUAY_IO_USERNAME }}
-          password: ${{ env.CONTAINER_REGISTRY == 'quay.io' && secrets.QUAY_IO_TOKEN }}
-        env:
-          CONTAINER_REGISTRY: ${{ env.CONTAINER_REGISTRY }}
+          username: ${{ env.CONTAINER_REGISTRY == 'quay.io' && secrets.QUAY_IO_USERNAME || '' }} # Set to empty string if not quay.io
+          password: ${{ env.CONTAINER_REGISTRY == 'quay.io' && secrets.QUAY_IO_TOKEN || '' }}    # Set to empty string if not quay.io
 
       - name: Docker meta
         id: meta
@@ -56,8 +54,9 @@ jobs:
 
       - name: Build and push multi-arch Image
         id: push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v2 # Use v2 instead of v3
         with:
+          context: .
           file: containers/Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
