@@ -6,7 +6,7 @@ on:
       - "*" # triggers only if new tag version is pushed
 
 env:
-  CONTAINER_REGISTRY: ${{ github.repository_owner == 'cloud-bulldozer' && 'quay.io' }}
+  CONTAINER_REGISTRY: ${{ github.repository_owner == 'krvoora_ocm' && 'quay.io' }}
   RHEL_VERSION: ubi9
   GO_VER: 1.19
 
