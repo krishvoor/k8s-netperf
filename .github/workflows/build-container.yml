@@ -40,7 +40,7 @@ jobs:
         with:
           registry: ${{ env.CONTAINER_REGISTRY }}
           username: ${{ env.CONTAINER_REGISTRY == 'quay.io' && secrets.QUAY_IO_USERNAME || github.actor }}
-          password: ${{ env.CONTAINER_REGISTRY == 'quay.io' && secrets.QUAY_IO_TOKEN    || secrets.GITHUB_TOKEN }
+          password: ${{ env.CONTAINER_REGISTRY == 'quay.io' && secrets.QUAY_IO_TOKEN    || secrets.GITHUB_TOKEN }}
 
       - name: Docker meta
         id: meta
