@@ -6,7 +6,8 @@ on:
       - "*" # triggers only if new tag version is pushed
 
 env:
-  CONTAINER_REGISTRY: ${{ github.repository_owner == 'krvoora_ocm' && 'quay.io' || '' }} # Set to empty string if not quay.io
+  CONTAINER_REGISTRY: ${{ 'quay.io' || '' }} # Set to empty string if not quay.io
+  QUAY_REPONAME: ${{ 'krvoora-ocm' || ''}}
   RHEL_VERSION: ubi9
   GO_VER: 1.19
 
@@ -52,7 +53,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository_owner }}/netperf
+          images: ${{ env.CONTAINER_REGISTRY }}/${{ env.QUAY_REPONAME }}/netperf
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
